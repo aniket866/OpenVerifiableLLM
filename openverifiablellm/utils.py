@@ -176,7 +176,12 @@ def extract_text_from_xml(input_path):
     
     output_path = output_dir / "wiki_clean.txt"
 
-    with bz2.open(input_path, "rb") as f:
+    if input_path.suffix == ".bz2":
+        file_handle = bz2.open(input_path, "rb")
+    else:
+        file_handle = open(input_path, "rb")
+    
+    with file_handle as f:
         context = ET.iterparse(f, events=("end",))
 
         with open(output_path, "w", encoding="utf-8") as out:
